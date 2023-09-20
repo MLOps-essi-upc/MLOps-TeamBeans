@@ -58,7 +58,8 @@ dataset_info:
     - [Data Instances](#data-instances)
     - [Data Fields](#data-fields)
     - [Data Splits](#data-splits)
-
+  - [Source Data](#source-data)
+  - [Data Author](#data-author)
 ## Dataset Description
 
 - **Repository:** [MLOps-essi-upc/MLOps-TeamBeans](https://github.com/MLOps-essi-upc/MLOps-TeamBeans)
@@ -121,6 +122,12 @@ Class Label Mappings:
 |# of examples|1034 |133       |128 |
 
 
+## Source Data
+
+The data has been sourced from repository at huggingface (https://huggingface.co/datasets/beans)
+
+
+## Data Author
 ```
 @ONLINE {beansdata,
     author="Makerere AI Lab",
