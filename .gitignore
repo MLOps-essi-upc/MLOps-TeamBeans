@@ -1,0 +1,7 @@
+.idea/
+*.egg-info/
+*.csv
+*.parquet
+data/*
+!data/.gitkeep
+*.pyc
