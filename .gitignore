@@ -7,3 +7,4 @@ data/*
 *.pyc
 *.env
 /data
+/raw

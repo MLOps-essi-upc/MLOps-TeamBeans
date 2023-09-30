@@ -1,0 +1,6 @@
+artifact_location: file:///C:/Users/joano/Documents/Master_in_Data_Science/Q3/MLOps/MLOps-TeamBeans/mlruns/872259012897197525
+creation_time: 1696066632346
+experiment_id: '872259012897197525'
+last_update_time: 1696066632346
+lifecycle_stage: active
+name: CNN-pytorch
