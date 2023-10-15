@@ -56,13 +56,18 @@ for asset_name, asset_df in [("train", train_df), ("test", test_df), ("validatio
     validator.expect_column_values_to_be_between(column="red_mean", min_value=0, max_value=255, parse_strings_as_datetimes=False)
     validator.expect_column_values_to_be_between(column="green_mean", min_value=0, max_value=255, parse_strings_as_datetimes=False)
     validator.expect_column_values_to_be_between(column="blue_mean", min_value=0, max_value=255, parse_strings_as_datetimes=False)
-
+    
+    validator.expect_column_distinct_values_to_equal_set("image_height", {500})
+    validator.expect_column_distinct_values_to_equal_set("image_width", {500})
     validator.save_expectation_suite(discard_failed_expectations=False)
 
     checkpoint = context.add_or_update_checkpoint(
         name=f"checkpoint_{asset_name}",
         validator=validator,
     )
+
+
+
 
     checkpoint_result = checkpoint.run()
     context.view_validation_result(checkpoint_result)

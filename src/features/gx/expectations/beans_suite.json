@@ -192,6 +192,26 @@
         "parse_strings_as_datetimes": false
       },
       "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_distinct_values_to_equal_set",
+      "kwargs": {
+        "column": "image_height",
+        "value_set": [
+          500
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_distinct_values_to_equal_set",
+      "kwargs": {
+        "column": "image_width",
+        "value_set": [
+          500
+        ]
+      },
+      "meta": {}
     }
   ],
   "ge_cloud_id": null,
