@@ -12,3 +12,6 @@ data/*
 .DS_Store
 /src/data/raw
 /src/models/trained_model.pt
+/.pytest_cache
+/MLFLOW_TRACKING_URI
+/zxczx
