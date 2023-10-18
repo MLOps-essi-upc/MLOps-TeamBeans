@@ -86,25 +86,28 @@ def print_auto_logged_info(r):
     print(f"tags: {tags}")
 
 def main():
-    # Get the current working directory
-    current_directory = os.getcwd()
+    from src.models.train_model import CustomDataset
+    # Get the absolute path to the root of your project
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    print(os.path.join(project_root,'.env'))
+    load_dotenv(dotenv_path=os.path.join(project_root,'.env'))
 
-    # Get the parent directory
-    parent_directory = os.path.dirname(current_directory)
-
-    # Get the parent parent directory
-    parent_parent_directory = os.path.dirname(parent_directory)
-
-    # Load environment variables from .env file
-    load_dotenv(dotenv_path=parent_parent_directory + '/.env')
+    train_loader = torch.load(os.path.join(project_root,'src', 'data', 'dataloaders', 'train_loader.pt'))
+    validation_loader= torch.load(os.path.join(project_root, 'src','data', 'dataloaders', 'validation_loader.pt'))
+    test_loader = torch.load(os.path.join(project_root, 'src','data', 'dataloaders', 'test_loader.pt'))
 
     # Set MLFLOW_TRACKING_USERNAME and MLFLOW_TRACKING_PASSWORD
-    os.environ['MLFLOW_TRACKING_USERNAME'] = os.getenv('MLFLOW_TRACKING_USERNAME')
-    os.environ['MLFLOW_TRACKING_PASSWORD'] = os.getenv('MLFLOW_TRACKING_PASSWORD')
-    # Load the DataLoader from the file
-    train_loader = torch.load(parent_directory + '/data/dataloaders/train_loader.pt')
-    validation_loader= torch.load(parent_directory + '/data/dataloaders/validation_loader.pt')
-    test_loader = torch.load(parent_directory + '/data/dataloaders/test_loader.pt')
+    mlflow_tracking_username = os.getenv('MLFLOW_TRACKING_USERNAME')
+    if mlflow_tracking_username is not None:
+        os.environ['MLFLOW_TRACKING_USERNAME'] = mlflow_tracking_username
+    else:
+        print("Warning: MLFLOW_TRACKING_USERNAME is not defined")
+
+    mlflow_tracking_password = os.getenv('MLFLOW_TRACKING_PASSWORD')
+    if mlflow_tracking_password is not None:
+        os.environ['MLFLOW_TRACKING_PASSWORD'] = mlflow_tracking_password
+    else:
+        print("Warning: MLFLOW_TRACKING_PASSWORD is not defined")
 
     mlflow.set_experiment("CNN-pytorch")
     mlflow.pytorch.autolog
@@ -159,10 +162,10 @@ def main():
         mlflow.log_param("fc1_input_size", model.fc1_input_size)
         mlflow.log_param("num_conv_layers", 2)  # Example: Number of convolutional layers
         mlflow.log_param("activation_function", "ReLU")  # Example: Activation function used
-
         for e in range(num_epochs):
             cum_epoch_loss = 0
-
+            list_epoch_loss=[]
+            individual_loss=0
             for batch, (images, labels) in enumerate(train_loader,1):
                 images = images.to(device)
                 labels = labels.to(device)
@@ -173,15 +176,25 @@ def main():
                 loss.backward()
                 optimizer.step()
 
+                individual_loss += loss.item()
                 batch_loss += loss.item()
                 print(f'Epoch({e+1}/{num_epochs} : Batch number({batch}/{len(train_loader)}) : Batch loss : {loss.item()}')
+
+            epoch_loss = batch_loss / len(train_loader)
+            list_epoch_loss.append(individual_loss/ len(train_loader))
+            cum_epoch_loss += epoch_loss
+
+            # Log the cumm and individual epoch loss as a metric
+            mlflow.log_metric("cummulative_epoch_loss", epoch_loss)
+            # mlflow.log_metric("individual_epoch_loss", individual_loss/ len(train_loader))
+            mlflow.log_metric("individual_epoch_loss_"+str(e+1),individual_loss/ len(train_loader))
+            print(f'Epoch({e + 1}/{num_epochs}) : Cummulative Epoch loss: {epoch_loss}')
+            print(f'Epoch({e + 1}/{num_epochs}) : Individual Epoch loss: {individual_loss/ len(train_loader)}')
 
         print(f'Training loss : {batch_loss/len(train_loader)}')
         
         # Log a metric (e.g., training loss)
         mlflow.log_metric("training_loss", batch_loss / len(train_loader))
-        
-        ###########################################################333
         
         model.to('cpu')
         
@@ -225,4 +238,4 @@ def main():
         
     
 if __name__=='__main__':
-    main()
+    main()  
