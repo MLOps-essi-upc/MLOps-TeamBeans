@@ -1,4 +1,3 @@
-# Dataset Card
 ---
 annotations_creators:
 - expert-generated
@@ -47,19 +46,17 @@ dataset_info:
 ---
 
 ## Table of Contents
-- [Dataset Card](#dataset-card)
-  - [dataset\_size: 478405](#dataset_size-478405)
-  - [Table of Contents](#table-of-contents)
-  - [Dataset Description](#dataset-description)
-    - [Dataset Summary](#dataset-summary)
-    - [Supported Tasks and Leaderboards](#supported-tasks-and-leaderboards)
-    - [Languages](#languages)
-  - [Dataset Structure](#dataset-structure)
-    - [Data Instances](#data-instances)
-    - [Data Fields](#data-fields)
-    - [Data Splits](#data-splits)
-  - [Source Data](#source-data)
-  - [Data Author](#data-author)
+- [Table of Contents](#table-of-contents)
+- [Dataset Description](#dataset-description)
+  - [Dataset Summary](#dataset-summary)
+  - [Supported Tasks and Leaderboards](#supported-tasks-and-leaderboards)
+  - [Languages](#languages)
+- [Dataset Structure](#dataset-structure)
+  - [Data Instances](#data-instances)
+  - [Data Fields](#data-fields)
+  - [Data Splits](#data-splits)
+- [Source Data](#source-data)
+- [Data Author](#data-author)
 ## Dataset Description
 
 - **Repository:** [MLOps-essi-upc/MLOps-TeamBeans](https://github.com/MLOps-essi-upc/MLOps-TeamBeans)
