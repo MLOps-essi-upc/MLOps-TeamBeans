@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
-import pyarrow.parquet as pq
 from datasets import Dataset as DatasetMain
-import pandas as pd
 import os
 import torch
 from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms, models
-import torch.nn as nn
+from torchvision import transforms
 
 torch.manual_seed(0)
 torch.backends.cudnn.deterministic = True
@@ -42,15 +38,15 @@ class CustomDataset(Dataset):
 # @click.argument('output_filepath', type=click.Path())
 # def main(input_filepath, output_filepath):
 def main():
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
+    """ 
+    Runs data processing scripts to turn raw data from (../raw) into 
+    cleaned data ready to be analyzed (saved in ../processed).
     """
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
     
     # if there is preprocessing it will go here
-    
-    
+
     logger.info('creating dataloaders from the preprocessed data')
     
     current_directory = os.getcwd()
@@ -95,5 +91,3 @@ if __name__ == '__main__':
     load_dotenv(find_dotenv())
 
     main()
-
-#blav2
