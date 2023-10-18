@@ -226,16 +226,16 @@ def main():
 
             # Log the test accuracy as a metric
             mlflow.log_metric("test_accuracy", test_accuracy)
+                    
     
     # save the trained model
     torch.save(model, 'trained_model.pt')
             
     # fetch the auto logged parameters and metrics
     print_auto_logged_info(mlflow.get_run(run_id=run.info.run_id))
-
+        
     if int(emission_choice) == 1:
         tracker.stop()
-        
     
 if __name__=='__main__':
     main()  
