@@ -1,9 +1,11 @@
-from datasets import load_dataset
 import os
+from datasets import load_dataset
 
-#i had to install datasets, chardet, charset_normalizer, pyyaml
 
 def main():
+    """
+    This is a function that loads the dataset from online and puts it in a local "raw" directory
+    """
     dataset = load_dataset("beans")
 
     current_directory = os.getcwd()
