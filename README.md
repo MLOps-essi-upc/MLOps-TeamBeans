@@ -1,3 +1,4 @@
+# Dataset Card
 ---
 annotations_creators:
 - expert-generated
@@ -45,10 +46,9 @@ dataset_info:
   dataset_size: 478405
 ---
 
-# Dataset Card for Beans
-
 ## Table of Contents
-- [Dataset Card for Beans](#dataset-card-for-beans)
+- [Dataset Card](#dataset-card)
+  - [dataset\_size: 478405](#dataset_size-478405)
   - [Table of Contents](#table-of-contents)
   - [Dataset Description](#dataset-description)
     - [Dataset Summary](#dataset-summary)
