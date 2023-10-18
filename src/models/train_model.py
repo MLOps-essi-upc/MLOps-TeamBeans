@@ -86,7 +86,7 @@ def print_auto_logged_info(r):
     print(f"tags: {tags}")
 
 def main():
-    from src.models.train_model import CustomDataset
+
     # Get the absolute path to the root of your project
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     print(os.path.join(project_root,'.env'))
