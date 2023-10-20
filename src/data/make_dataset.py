@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import logging
+import os
+import torch
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 from datasets import Dataset as DatasetMain
-import os
-import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 
@@ -13,6 +13,11 @@ torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 class CustomDataset(Dataset):
+    """
+    This is a class that extends the Dataset class from pytorch. It's used to make sure that the 
+    input for the model is properly initialized. This means resizing it to be 500 x 500, initialising it
+    as a tensor and normalizing the RGB values. 
+    """
     def __init__(self, dataset):
         self.data = dataset
         self.transform = transforms.Compose([
