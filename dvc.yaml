@@ -1,0 +1,33 @@
+stages:
+  make_dataset:
+    cmd: python src/data/make_dataset.py
+    deps:
+    - data/raw/train/data-00000-of-00001.arrow
+    - data/raw/validation/data-00000-of-00001.arrow
+    - data/raw/test/data-00000-of-00001.arrow
+    - src/data/make_dataset.py
+    outs:
+      - data/processed/train_loader.pt
+      - data/processed/validation_loader.pt
+      - data/processed/test_loader.pt
+
+
+  train:
+    cmd: python src/models/train_model.py
+    deps:
+    - data/processed/train_loader.pt
+    - data/processed/validation_loader.pt
+    - src/models/train_model.py
+    outs:
+    - models/model.pkl
+    - models/emissions.csv
+
+
+  evaluate:
+    cmd: python src/models/evaluate_model.py
+    deps:
+      - data/processed/test_loader.pt
+      - src/models/evaluate_model.py
+      - models/model.pkl
+    outs:
+      - models/evaluation_metrics.csv
