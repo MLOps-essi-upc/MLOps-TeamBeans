@@ -9,6 +9,11 @@ from codecarbon import EmissionsTracker
 from torchvision import transforms
 
 class CustomDataset(Dataset):
+    """
+    This is a class that extends the Dataset class from pytorch. It's used to make sure that the 
+    input for the model is properly initialized. This means resizing it to be 500 x 500, initialising it
+    as a tensor and normalizing the RGB values. 
+    """
     def __init__(self, dataset):
         self.data = dataset
         self.transform = transforms.Compose([
@@ -29,6 +34,9 @@ class CustomDataset(Dataset):
     
 
 class SimpleCNNReducedStride10(nn.Module):
+    """
+    This is the architecture of our CNN.
+    """
     def __init__(self, num_classes=3):
         super(SimpleCNNReducedStride10, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=8, kernel_size=3, stride=2, padding=1)
