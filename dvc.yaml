@@ -1,12 +1,15 @@
 stages:
   make_dataset:
-    cmd: -o data/processed/train_loader.pt -o data/processed/validation_loader.pt
-      -o data/processed/test_loader.pt python /src/data/make_dataset.py
+    cmd: python /src/data/make_dataset.py
     deps:
     - data/raw/train/data-00000-of-00001.arrow
     - data/raw/validation/data-00000-of-00001.arrow
     - data/raw/test/data-00000-of-00001.arrow
     - src/data/make_dataset.py
+    outs:
+      - data/processed/train_loader.pt
+      - data/processed/validation_loader.pt
+      - data/processed/test_loader.pt
 
 
   train:
