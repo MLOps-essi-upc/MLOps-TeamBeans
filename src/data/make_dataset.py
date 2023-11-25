@@ -56,11 +56,11 @@ def main():
     
     current_directory = os.getcwd()
 
-    dataset_train = DatasetMain.from_file(os.path.join(current_directory, "raw/train/") + "data-00000-of-00001.arrow")
+    dataset_train = DatasetMain.from_file(os.path.join(current_directory, "../../data/raw/train/") + "data-00000-of-00001.arrow")
 
-    dataset_validation = DatasetMain.from_file(os.path.join(current_directory, "raw/validation/") + "data-00000-of-00001.arrow")
+    dataset_validation = DatasetMain.from_file(os.path.join(current_directory, "../../data/raw/validation/") + "data-00000-of-00001.arrow")
 
-    dataset_test = DatasetMain.from_file(os.path.join(current_directory, "raw/test/") + "data-00000-of-00001.arrow")
+    dataset_test = DatasetMain.from_file(os.path.join(current_directory, "../../data/raw/test/") + "data-00000-of-00001.arrow")
 
     custom_train = CustomDataset(dataset_train)
     custom_validation = CustomDataset(dataset_validation)
@@ -72,13 +72,13 @@ def main():
     test_loader = DataLoader(custom_test, batch_size=32, shuffle=False)
     
     # Create the directory if it doesn't exist
-    if not os.path.exists('dataloaders'):
-        os.makedirs('dataloaders')
+    if not os.path.exists('../../data/processed'):
+        os.makedirs('../../data/processed')
 
     # Save the DataLoader to a file
-    torch.save(train_loader, 'dataloaders/train_loader.pt')
-    torch.save(validation_loader, 'dataloaders/validation_loader.pt')
-    torch.save(test_loader, 'dataloaders/test_loader.pt')
+    torch.save(train_loader, '../../data/processed/train_loader.pt')
+    torch.save(validation_loader, '../../data/processed/validation_loader.pt')
+    torch.save(test_loader, '../../data/processed/test_loader.pt')
     
     
     

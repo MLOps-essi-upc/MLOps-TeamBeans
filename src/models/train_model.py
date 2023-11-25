@@ -49,9 +49,9 @@ def main():
     print(os.path.join(project_root,'.env'))
     load_dotenv(dotenv_path=os.path.join(project_root,'.env'))
 
-    train_loader = torch.load(os.path.join(project_root,'src', 'data', 'dataloaders', 'train_loader.pt'))
-    validation_loader= torch.load(os.path.join(project_root, 'src','data', 'dataloaders', 'validation_loader.pt'))
-    test_loader = torch.load(os.path.join(project_root, 'src','data', 'dataloaders', 'test_loader.pt'))
+    train_loader = torch.load(os.path.join(project_root, 'data', 'processed', 'train_loader.pt'))
+    validation_loader= torch.load(os.path.join(project_root,'data', 'processed', 'validation_loader.pt'))
+    test_loader = torch.load(os.path.join(project_root,'data', 'processed', 'test_loader.pt'))
 
     # Set MLFLOW_TRACKING_USERNAME and MLFLOW_TRACKING_PASSWORD
     mlflow_tracking_username = os.getenv('MLFLOW_TRACKING_USERNAME')
@@ -183,7 +183,7 @@ def main():
                     
     
     # save the trained model
-    torch.save(model.state_dict(), 'trained_model.pt')
+    torch.save(model.state_dict(), '../../models/trained_model.pt')
             
     # fetch the auto logged parameters and metrics
     print_auto_logged_info(mlflow.get_run(run_id=run.info.run_id))

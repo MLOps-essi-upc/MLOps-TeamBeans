@@ -41,13 +41,11 @@ def add_image_metadata(df):
 def main():
     script_dir = os.path.dirname(os.path.realpath(__file__))
 
-    raw_directory = os.path.join(script_dir, "raw")
+    raw_directory = os.path.join(script_dir, "../../data/raw")
     dataset = load_from_disk(raw_directory)
 
     train_data = dataset["train"]
-
     test_data = dataset["test"]
-
     validation_data = dataset["validation"]
 
     train_df = train_data.to_pandas()
