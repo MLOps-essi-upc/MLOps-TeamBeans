@@ -1,0 +1,14 @@
+FROM python:3.9
+
+WORKDIR /app-beans
+
+# Copy the application files to the container
+COPY . /app-beans
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt -v
+
+
+EXPOSE 8000
+
+ENTRYPOINT ["uvicorn", "src.app.api:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "src/app", "--reload-dir", "src/models"]
