@@ -4,3 +4,10 @@ scikit-learn==1.3.0
 codecarbon==2.3.1
 pynblint==0.1.5
 great_expectations==0.17.22
+Pillow==10.0
+pytest==7.4.3
+torchvision==0.16.1
+python-multipart==0.0.6
+fastapi==0.68.0
+uvicorn[standard]==0.24.0.post1
+httpx==0.21.0

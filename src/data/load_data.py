@@ -10,7 +10,7 @@ def main():
 
     current_directory = os.getcwd()
 
-    raw_directory = os.path.join(current_directory, "raw")
+    raw_directory = os.path.join(current_directory, "../../data/raw")
 
     # Save the dataset to the specified local directory
     dataset.save_to_disk(raw_directory)
