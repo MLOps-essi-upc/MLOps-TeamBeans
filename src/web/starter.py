@@ -17,7 +17,8 @@ def save_public_ip(public_ip):
 
 def run_app(public_ip):
     # Run app.py passing the public IP as an argument
-    subprocess.run(["python", "app.py", public_ip])
+    # MD change: to python3 
+    subprocess.run(["python3", "app.py", public_ip])
 
 def main():
     docker_status = get_docker_status()

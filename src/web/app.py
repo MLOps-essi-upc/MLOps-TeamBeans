@@ -54,7 +54,9 @@ def upload_file():
     file.save(file_path)
     
     #print("The received argument variable is: ", adress)
-    command = f"curl -X POST -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F 'beans_img=@{file_path}' http://{adress}:4000/make_prediction"
+    # MD change : (Pau instructions added)
+    command = 'curl -X POST -H "Content-Type: multipart/form-data" -H "Accept: application/json" -F "beans_img=@{}" http://{}:443/make_prediction'.format(file_path.replace("\\", "\\\\"), adress)
+    app.logger.info(command)
     # Get the classification result
     response = subprocess.getoutput(command)
 
