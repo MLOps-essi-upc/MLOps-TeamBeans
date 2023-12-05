@@ -8,6 +8,7 @@ import torch.nn as nn
 from codecarbon import EmissionsTracker
 from torchvision import transforms
 from model import SimpleCNNReducedStride10
+import sys
 
 class CustomDataset(Dataset):
     """
@@ -51,7 +52,6 @@ def main():
 
     train_loader = torch.load(os.path.join(project_root, 'data', 'processed', 'train_loader.pt'))
     validation_loader= torch.load(os.path.join(project_root,'data', 'processed', 'validation_loader.pt'))
-    test_loader = torch.load(os.path.join(project_root,'data', 'processed', 'test_loader.pt'))
 
     # Set MLFLOW_TRACKING_USERNAME and MLFLOW_TRACKING_PASSWORD
     mlflow_tracking_username = os.getenv('MLFLOW_TRACKING_USERNAME')
@@ -72,10 +72,13 @@ def main():
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-        
-    emission_choice = input('Do you want to track emissions from the model training process? Press 1 for yes and 2 for no:  ')
+    if len(sys.argv) > 1:
+        emission_choice = sys.argv[1]
+    else:
+        emission_choice = input(
+            'Do you want to track emissions from the model training process? Press 1 for yes and 2 for no:  ')
     if int(emission_choice) == 1:
-        tracker = EmissionsTracker()
+        tracker = EmissionsTracker(output_dir=os.path.join(project_root, 'models'))
         tracker.start()
         
     with mlflow.start_run() as run:
@@ -176,14 +179,14 @@ def main():
 
             # Calculate test accuracy
             val_accuracy = num_correct * 100 / total
-            print(f'Accuracy of the model on {total} test images: {val_accuracy}% ')
+            print(f'Accuracy of the model on {total} validation images: {val_accuracy}% ')
 
             # Log the test accuracy as a metric
             mlflow.log_metric("validation_accuracy", val_accuracy)
                     
     
     # save the trained model
-    torch.save(model.state_dict(), '../../models/trained_model.pt')
+    torch.save(model.state_dict(), os.path.join(project_root, 'models', 'trained_model.pt'))
             
     # fetch the auto logged parameters and metrics
     print_auto_logged_info(mlflow.get_run(run_id=run.info.run_id))

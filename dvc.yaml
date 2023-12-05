@@ -13,21 +13,21 @@ stages:
 
 
   train:
-    cmd: python src/models/train_model.py
+    cmd: python src/models/train_model.py 1
     deps:
     - data/processed/train_loader.pt
     - data/processed/validation_loader.pt
     - src/models/train_model.py
     outs:
-    - models/model.pkl
+    - models/trained_model.pt
     - models/emissions.csv
 
 
   evaluate:
-    cmd: python src/models/evaluate_model.py
+    cmd: python src/models/test_model.py
     deps:
       - data/processed/test_loader.pt
-      - src/models/evaluate_model.py
-      - models/model.pkl
+      - src/models/test_model.py
+      - models/trained_model.pt
     outs:
-      - models/evaluation_metrics.csv
+      - models/test_metrics.csv
