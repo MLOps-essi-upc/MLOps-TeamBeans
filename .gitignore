@@ -19,3 +19,4 @@ BeansKey.pem
 src/data/dataloaders/test_loader.pt
 src/data/dataloaders/train_loader.pt
 src/data/dataloaders/validation_loader.pt
+models/trained_model.pt
