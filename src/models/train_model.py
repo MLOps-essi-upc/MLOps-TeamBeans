@@ -175,11 +175,11 @@ def main():
                 # break
 
             # Calculate test accuracy
-            test_accuracy = num_correct * 100 / total
-            print(f'Accuracy of the model on {total} test images: {test_accuracy}% ')
+            val_accuracy = num_correct * 100 / total
+            print(f'Accuracy of the model on {total} test images: {val_accuracy}% ')
 
             # Log the test accuracy as a metric
-            mlflow.log_metric("test_accuracy", test_accuracy)
+            mlflow.log_metric("validation_accuracy", val_accuracy)
                     
     
     # save the trained model
