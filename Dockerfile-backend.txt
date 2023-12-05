@@ -1,0 +1,24 @@
+# Backend only
+FROM python:3.9-slim
+
+WORKDIR /app-beans
+
+# Copy the application files to the container
+COPY ./requirements-Docker.txt /app-beans/requirements-Docker.txt
+COPY ./models /app-beans/models
+COPY ./src /app-beans/src
+
+RUN rm -rf /app-beans/src/data
+RUN rm -rf /app-beans/src/features
+RUN rm -rf /app-beans/src/visualization
+RUN rm -rf /app-beans/src/web
+RUN rm -rf /app-beans/src/__pycache__
+RUN rm -rf /app-beans/src/app/__pycache__
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements-Docker.txt -v
+
+
+EXPOSE 8000
+
+ENTRYPOINT ["uvicorn", "src.app.api:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "src/app", "--reload-dir", "models"]

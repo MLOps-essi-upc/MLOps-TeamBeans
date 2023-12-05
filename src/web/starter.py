@@ -21,12 +21,12 @@ def run_app(public_ip):
     subprocess.run(["python3", "app.py", public_ip])
 
 def main():
-    docker_status = get_docker_status()
-    if docker_status == "external":
-        public_ip = get_public_ip()
-        save_public_ip(public_ip)
-    else:
-        public_ip = "localhost"
+    # docker_status = get_docker_status()
+    # if docker_status == "external":
+    #     public_ip = get_public_ip()
+    #     save_public_ip(public_ip)
+    # else:
+    public_ip = "localhost"
     run_app(public_ip)
 
 if __name__ == "__main__":
