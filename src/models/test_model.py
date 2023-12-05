@@ -49,8 +49,9 @@ def main():
 
     path=os.path.join(project_root,'models')
     for filename in os.scandir(path):
-        model.load_state_dict(torch.load(os.path.join(path,filename)))
-        model.eval()
+        if "model.pt" in str(filename):
+            model.load_state_dict(torch.load(os.path.join(path,filename)))
+            model.eval()
 
     with torch.no_grad():
             total = 0
@@ -85,7 +86,7 @@ def main():
             print(cm)
 
             # Store metrics in a CSV file
-            csv_file_path = os.path.join(project_root,'metrics', 'test_metrics.csv')
+            csv_file_path = os.path.join(project_root, 'models', 'test_metrics.csv')
             with open(csv_file_path, 'w', newline='') as csvfile:
                 csv_writer = csv.writer(csvfile)
 

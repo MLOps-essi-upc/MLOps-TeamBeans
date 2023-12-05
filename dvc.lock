@@ -1,0 +1,78 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: python src/data/make_dataset.py
+    deps:
+    - path: data/raw/test/data-00000-of-00001.arrow
+      hash: md5
+      md5: 2db25dd68cc575429e85a8c7956c4f18
+      size: 17725232
+    - path: data/raw/train/data-00000-of-00001.arrow
+      hash: md5
+      md5: cd1ba0f80ea61f631403551006f395d2
+      size: 143947208
+    - path: data/raw/validation/data-00000-of-00001.arrow
+      hash: md5
+      md5: 38efde990d6ce3820901a12350169ee8
+      size: 18520456
+    - path: src/data/make_dataset.py
+      hash: md5
+      md5: 4d063ac963e8b2862509402cd628f780
+      size: 3615
+    outs:
+    - path: data/processed/test_loader.pt
+      hash: md5
+      md5: 8b32169731d88bef96c4a6ed7c2d4802
+      size: 4464
+    - path: data/processed/train_loader.pt
+      hash: md5
+      md5: 1131e49cebd969cab6a54c3cd959274c
+      size: 4468
+    - path: data/processed/validation_loader.pt
+      hash: md5
+      md5: e387ef17e00b81fe5407e3019115fbf4
+      size: 4488
+  train:
+    cmd: python src/models/train_model.py 1
+    deps:
+    - path: data/processed/train_loader.pt
+      hash: md5
+      md5: 1131e49cebd969cab6a54c3cd959274c
+      size: 4468
+    - path: data/processed/validation_loader.pt
+      hash: md5
+      md5: e387ef17e00b81fe5407e3019115fbf4
+      size: 4488
+    - path: src/models/train_model.py
+      hash: md5
+      md5: ffd266a9365b91acee573b7bd32db990
+      size: 7774
+    outs:
+    - path: models/emissions.csv
+      hash: md5
+      md5: 20ba0e40e497c4d1f2894130b61cc2ca
+      size: 667
+    - path: models/trained_model.pt
+      hash: md5
+      md5: 70a05cefab96ad32bca408847575702c
+      size: 256013000
+  evaluate:
+    cmd: python src/models/test_model.py
+    deps:
+    - path: data/processed/test_loader.pt
+      hash: md5
+      md5: 8b32169731d88bef96c4a6ed7c2d4802
+      size: 4464
+    - path: models/trained_model.pt
+      hash: md5
+      md5: 70a05cefab96ad32bca408847575702c
+      size: 256013000
+    - path: src/models/test_model.py
+      hash: md5
+      md5: be09e5356ddcdcba85d9ca9e734c6752
+      size: 3850
+    outs:
+    - path: models/test_metrics.csv
+      hash: md5
+      md5: bf5e3b613f3971b9938cd1473b49a79a
+      size: 274
