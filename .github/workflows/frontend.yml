@@ -1,0 +1,58 @@
+ name: Frontend CI/CD
+
+ run-name: Action executed by ${{ github.actor }} - Frontend CI/CD
+
+ on:
+   push:
+     paths:
+       - 'src/web/**'
+     branches:
+       - main
+       - github-actions
+   pull_request:
+     paths:
+       - 'src/web/**'
+     branches:
+       - main
+
+ jobs:
+
+   cd_push_to_dockerhub:
+     runs-on: ubuntu-latest
+
+     steps:
+
+     - name: Checkout code
+       uses: actions/checkout@v4
+
+     - name: Environment setup # Set up with a specific version of Python
+       uses: actions/setup-python@v4
+       with:
+         python-version: 3.8
+         cache: pip
+
+     - name: Cache # Cache dependencies
+       uses: actions/cache@v3
+       with:
+         path: ~/.cache/pip
+         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+         restore-keys: ${{ runner.os }}-pip-
+
+     - name: Install packages # Install dependencies
+       run: pip install docker
+
+     - name: Docker login
+       run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+     - name: Build
+       run: docker build -f Dockerfile-frontend.txt . -t app-beans-frontend
+
+     - name: Tags
+       run: |
+         docker tag app-beans-frontend ${{ secrets.DOCKER_USER }}/app-beans-frontend:${{ github.sha }}
+         docker tag app-beans-frontend ${{ secrets.DOCKER_USER }}/app-beans-frontend:latest
+
+     - name: Push
+       run: |
+         docker push ${{ secrets.DOCKER_USER }}/app-beans-frontend:${{ github.sha }}
+         docker push ${{ secrets.DOCKER_USER }}/app-beans-frontend:latest
