@@ -45,7 +45,7 @@
        run: |
          pytest tests/test_mlflow.py
          pytest tests/test_train_model.py
-       continue-on-error: true
+       continue-on-error: false
 
 
    cd_push_to_dockerhub:
