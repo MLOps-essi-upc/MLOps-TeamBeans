@@ -29,7 +29,6 @@ def process_input(input_str):
     }
 
     return result
-
 adress = sys.argv[1]
 
 app = Flask(__name__)
@@ -51,10 +50,14 @@ def upload_file():
     # Save the file to a temporary location
     temp_dir = tempfile.mkdtemp()
     file_path = os.path.join(temp_dir, file.filename)
+    print(file_path)
     file.save(file_path)
     
     #print("The received argument variable is: ", adress)
-    command = f"curl -X POST -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F 'beans_img=@{file_path}' http://{adress}:4000/make_prediction"
+    # MD change : (Pau instructions added)
+    command = 'curl -X POST -H "Content-Type: multipart/form-data" -H "Accept: application/json" -F "beans_img=@{}" host.docker.internal:443/make_prediction'.format(file_path.replace("\\", "\\\\"))
+       
+    app.logger.info(command)
     # Get the classification result
     response = subprocess.getoutput(command)
 
@@ -65,4 +68,4 @@ def upload_file():
     return render_template('result.html', result=result)
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port=8000, debug=True)

@@ -1,0 +1,21 @@
+# Frontend only
+FROM python:3.9-slim
+
+WORKDIR /app-beans
+
+# Copy the application files to the container
+COPY ./requirements-Docker-frontend.txt /app-beans/requirements-Docker-frontend.txt
+COPY ./src/web /app-beans/src/web
+
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements-Docker-frontend.txt -v
+
+RUN apt-get update && \
+    apt-get install -y curl
+    
+WORKDIR /app-beans/src/web
+
+EXPOSE 8000
+
+CMD ["python3", "starter.py"]
