@@ -1,0 +1,98 @@
+ name: Backend model CI/CD
+
+ run-name: Action executed by ${{ github.actor }} - Backend CI/CD
+
+ on:
+   push:
+     branches:
+       - main
+       - github-actions
+   pull_request:
+     branches:
+       - main
+
+ jobs:
+   ci_build_and_test:
+     runs-on: ubuntu-latest
+
+     steps:
+     - name: Checkout code
+       uses: actions/checkout@v4
+
+     - name: Environment setup # Set up with a specific version of Python
+       uses: actions/setup-python@v4
+       with:
+         python-version: 3.8
+         cache: pip
+
+     - name: Cache # Cache dependencies
+       uses: actions/cache@v3
+       with:
+         path: ~/.cache/pip
+         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+         restore-keys: ${{ runner.os }}-pip-
+
+     - name: Create .env file
+       run: |
+         echo "MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }}" >> .env
+         echo "MLFLOW_TRACKING_USERNAME=${{ secrets.MLFLOW_TRACKING_USERNAME }}" >> .env
+         echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> .env
+
+     - name: Install packages # Install dependencies
+       run: pip install pytest mlflow python-dotenv
+
+     - name: Run training tests
+       run: |
+         pytest tests/test_mlflow.py
+         pytest tests/test_train_model.py
+       continue-on-error: false
+
+
+   cd_push_to_dockerhub:
+     needs: ci_build_and_test
+     runs-on: ubuntu-latest
+     if: success()
+
+     steps:
+
+     - name: Checkout code
+       uses: actions/checkout@v4
+
+     - name: Environment setup # Set up with a specific version of Python
+       uses: actions/setup-python@v4
+       with:
+         python-version: 3.8
+         cache: pip
+
+     - name: Cache # Cache dependencies
+       uses: actions/cache@v3
+       with:
+         path: ~/.cache/pip
+         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+         restore-keys: ${{ runner.os }}-pip-
+
+     - name: Install packages # Install dependencies
+       run: pip install dvc docker
+
+     - name: Pull data
+       run: |
+         dvc remote modify origin --local auth basic
+         dvc remote modify origin --local user ${{ secrets.DAGSHUB_USERNAME }}
+         dvc remote modify origin --local password ${{ secrets.DAGSHUB_TOKEN }}
+         dvc pull -r origin models/trained_model.pt
+
+     - name: Docker login
+       run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+     - name: Build
+       run: docker build -f Dockerfile-backend.txt . -t app-beans-backend-github-actions
+
+     - name: Tags
+       run: |
+         docker tag app-beans-backend-github-actions ${{ secrets.DOCKER_USER }}/app-beans-backend-github-actions:${{ github.sha }}
+         docker tag app-beans-backend-github-actions ${{ secrets.DOCKER_USER }}/app-beans-backend-github-actions:latest
+
+     - name: Push
+       run: |
+         docker push ${{ secrets.DOCKER_USER }}/app-beans-backend-github-actions:${{ github.sha }}
+         docker push ${{ secrets.DOCKER_USER }}/app-beans-backend-github-actions:latest

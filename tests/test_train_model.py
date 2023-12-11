@@ -33,7 +33,7 @@ def test_epoch_loss():
 
 def test_accuracy_threshold():
     for index, row in runs_final.iterrows():
-        assert row["metrics.test_accuracy"]>70, "Model accuracy under threshold, review model architecture"
+        assert row["metrics.validation_accuracy"]>70, "Model accuracy under threshold, review model architecture"
 
 def test_artifacts():
     for index, row in runs_final.iterrows():
