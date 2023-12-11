@@ -55,7 +55,8 @@ def upload_file():
     
     #print("The received argument variable is: ", adress)
     # MD change : (Pau instructions added)
-    command = 'curl -X POST -H "Content-Type: multipart/form-data" -H "Accept: application/json" -F "beans_img=@{}" host.docker.internal:443/make_prediction'.format(file_path.replace("\\", "\\\\"))
+    #command = 'curl -X POST -H "Content-Type: multipart/form-data" -H "Accept: application/json" -F "beans_img=@{}" host.docker.internal:443/make_prediction'.format(file_path.replace("\\", "\\\\"))
+    command = f"curl -X POST -H 'Content-Type: multipart/form-data' -H 'Accept: application/json' -F 'beans_img=@{file_path}' http://{adress}:440/make_prediction"
        
     app.logger.info(command)
     # Get the classification result
