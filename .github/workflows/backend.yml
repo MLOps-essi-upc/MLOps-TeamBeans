@@ -38,9 +38,9 @@
          echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> .env
 
      - name: Install packages # Install dependencies
-       run: pip install pytest mlflow python-dotenv fastapi
+       run: pip install pytest mlflow python-dotenv fastapi httpx
 
-     - name: Run training tests
+     - name: Run tests
        run: |
          pytest tests/test_mlflow.py
          pytest tests/test_train_model.py
