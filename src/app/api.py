@@ -2,7 +2,6 @@ from http import HTTPStatus
 from typing import List
 from PIL import Image
 from io import BytesIO
-import uvicorn
 from fastapi import FastAPI, Request, File, UploadFile, HTTPException
 from torchvision import transforms
 import torch
