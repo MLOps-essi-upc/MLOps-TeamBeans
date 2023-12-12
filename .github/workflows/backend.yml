@@ -38,7 +38,7 @@
          echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.MLFLOW_TRACKING_PASSWORD }}" >> .env
 
      - name: Install packages # Install dependencies needed for tests (not for whole project)
-       run: pip install pytest mlflow python-dotenv fastapi httpx torch torchvision pydantic python-multipart
+       run: pip install pytest mlflow python-dotenv fastapi httpx torch torchvision pydantic python-multipart dvc
 
      - name: Pull model
        run: |
