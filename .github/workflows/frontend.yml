@@ -8,7 +8,6 @@
        - 'src/web/**'
      branches:
        - main
-       - github-actions
    pull_request:
      paths:
        - 'src/web/**'
