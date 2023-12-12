@@ -40,6 +40,13 @@
      - name: Install packages # Install dependencies needed for tests (not for whole project)
        run: pip install pytest mlflow python-dotenv fastapi httpx torch torchvision pydantic python-multipart
 
+     - name: Pull model
+       run: |
+         dvc remote modify origin --local auth basic
+         dvc remote modify origin --local user ${{ secrets.DAGSHUB_USERNAME }}
+         dvc remote modify origin --local password ${{ secrets.DAGSHUB_TOKEN }}
+         dvc pull -r origin models/trained_model.pt
+
      - name: Run tests
        run: |
          pytest tests/test_mlflow.py
@@ -74,7 +81,7 @@
      - name: Install packages # Install dependencies
        run: pip install dvc docker
 
-     - name: Pull data
+     - name: Pull model
        run: |
          dvc remote modify origin --local auth basic
          dvc remote modify origin --local user ${{ secrets.DAGSHUB_USERNAME }}
