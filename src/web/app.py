@@ -54,7 +54,8 @@ def upload_file():
     file.save(file_path)
     
     #print("The received argument variable is: ", adress)
-    # MD change : (Pau instructions added)
+    # MD change : (Pau instructions added) 
+    # v
     command = 'curl -X POST -H "Content-Type: multipart/form-data" -H "Accept: application/json" -F "beans_img=@{}" host.docker.internal:443/make_prediction'.format(file_path.replace("\\", "\\\\"))
        
     app.logger.info(command)
