@@ -45,6 +45,7 @@
        run: |
          pytest tests/test_mlflow.py
          pytest tests/test_train_model.py
+         pytest tests/test_api.py
        continue-on-error: false
 
 
